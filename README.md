@@ -1,1 +1,0 @@
-This is the AMD hackathon that took place on June 12th 2024. 
