@@ -25,6 +25,26 @@ const Home = () => {
     }
   }, [user]);
 
+  const assignToUser = async (ticketId) => {
+    if (user && user.user_metadata && user.user_metadata.user_name) {
+      const { user_name } = user.user_metadata;
+      const { data, error } = await supabase
+        .from('tickets')
+        .update({ assigned_to: user_name })
+        .eq('id', ticketId);
+
+      if (error) {
+        console.error('Error updating ticket:', error);
+      } else {
+        setTickets(prevTickets => 
+          prevTickets.map(ticket => 
+            ticket.id === ticketId ? { ...ticket, assigned_to: user_name } : ticket
+          )
+        );
+      }
+    }
+  };
+
   if (loading || loadingTickets) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -37,7 +57,7 @@ const Home = () => {
     return <div>Redirecting to GitHub login...</div>;
   }
 
-  console.log(user)
+  console.log(user);
 
   return (
     <>
@@ -62,7 +82,18 @@ const Home = () => {
                   <td>{ticket.security_severity} 🪙</td>
                   <td>{ticket.ruleId}</td>
                   <td>{ticket.message_text}</td>
-                  <td>{ticket.assigned_to ? ticket.assigned_to : <button className="btn btn-sm btn-primary">Assign Me</button>}</td>
+                  <td>
+                    {ticket.assigned_to ? (
+                      ticket.assigned_to
+                    ) : (
+                      <button 
+                        className="btn btn-xs btn-primary"
+                        onClick={() => assignToUser(ticket.id)}
+                      >
+                        Assign Me
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
