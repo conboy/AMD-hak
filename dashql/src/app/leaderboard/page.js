@@ -58,6 +58,7 @@ const Leaderboard = () => {
                   <th>Avatar</th>
                   <th>Name</th>
                   <th>Coins</th>
+                  <th>Solved</th>
                 </tr>
               </thead>
               <tbody>
@@ -77,7 +78,8 @@ const Leaderboard = () => {
                       </div>
                     </td>
                     <td>{user.user_name}</td>
-                    <td>{user.points}</td>
+                    <td>{user.points} 🪙</td>
+                    <td>{user.number_solved}</td>
                   </tr>
                 ))}
               </tbody>
