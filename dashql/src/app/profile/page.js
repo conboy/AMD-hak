@@ -1,12 +1,38 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import useAuth from '../lib/useAuth';
+import supabase from '../lib/supabaseClient';
 
 const Profile = () => {
   const { user, loading } = useAuth();
+  const [points, setPoints] = useState(0);
+  const [numberSolved, setNumberSolved] = useState(0);
+  const [loadingData, setLoadingData] = useState(true);
 
-  if (loading) {
+  useEffect(() => {
+    const fetchUserPoints = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from('points')
+          .select('*')
+          .eq('user_name', user.user_metadata.user_name)
+          .single();
+
+        if (error) {
+          console.error('Error fetching user points:', error);
+        } else {
+          setPoints(data.points);
+          setNumberSolved(data.number_solved);
+        }
+        setLoadingData(false);
+      }
+    };
+
+    fetchUserPoints();
+  }, [user]);
+
+  if (loading || loadingData) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <span className="loading loading-infinity loading-lg"></span>
@@ -19,7 +45,6 @@ const Profile = () => {
   }
 
   // Placeholder for gamified data
-  const points = 1250;
   const level = 5;
   const xp = 75; // Current XP percentage towards the next level
   const achievements = [
@@ -54,15 +79,15 @@ const Profile = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="card bg-base-200 shadow-xl p-8">
-              <h2 className="text-2xl font-bold mb-4">Gamification</h2>
+              <h2 className="text-2xl font-bold mb-4">Stats</h2>
               <div className="stats stats-vertical md:stats-horizontal shadow">
                 <div className="stat">
                   <div className="stat-title">Points</div>
                   <div className="stat-value">{points}</div>
                 </div>
                 <div className="stat">
-                  <div className="stat-title">Level</div>
-                  <div className="stat-value">{level}</div>
+                  <div className="stat-title">Solved</div>
+                  <div className="stat-value">{numberSolved}</div>
                 </div>
               </div>
               <div className="mt-4">
@@ -105,6 +130,6 @@ const Profile = () => {
       </main>
     </>
   );
-};  
+};
 
 export default Profile;
