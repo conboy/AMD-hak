@@ -16,7 +16,7 @@ const useAuth = () => {
         await supabase.auth.signInWithOAuth({
           provider: 'github',
           options: {
-            scopes: 'repo gist notifications',
+            redirectTo: `https://cipubdiqomjtsdayksmf.supabase.co/auth/v1/callback`,
           },
         });
       }
