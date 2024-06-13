@@ -1,58 +1,35 @@
-// src/pages/leaderboard.js
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import useAuth from '../lib/useAuth';
-
-// Placeholder data
-const leaderboardData = [
-  {
-    id: 1,
-    name: 'Conrad',
-    coins: 1500,
-    level: 10,
-    achievements: ['Bug Buster', 'Security Sentry'],
-    avatarUrl: 'https://via.placeholder.com/150',
-  },
-  {
-    id: 2,
-    name: 'Ian',
-    coins: 1200,
-    level: 8,
-    achievements: ['Code Guardian', 'Speedy Solver'],
-    avatarUrl: 'https://via.placeholder.com/150',
-  },
-  {
-    id: 3,
-    name: 'Luka',
-    coins: 900,
-    level: 7,
-    achievements: ['The Fixer', 'Ultimate Debugger'],
-    avatarUrl: 'https://via.placeholder.com/150',
-  },
-  {
-    id: 3,
-    name: 'Vivek',
-    coins: 900,
-    level: 7,
-    achievements: ['Patch Master', 'Firewall Fortifier'],
-    avatarUrl: 'https://via.placeholder.com/150',
-  },
-  {
-    id: 3,
-    name: 'Charlie',
-    coins: 900,
-    level: 7,
-    achievements: ['Data Defender', 'Patch Prodigy'],
-    avatarUrl: 'https://via.placeholder.com/150',
-  },
-  // Add more users as needed
-];
+import supabase from '../lib/supabaseClient';
 
 const Leaderboard = () => {
   const { user, loading } = useAuth();
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
 
-  if (loading) {
+  useEffect(() => {
+    const fetchLeaderboardData = async () => {
+      const { data, error } = await supabase
+        .from('points')
+        .select('*')
+        .order('points', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching leaderboard data:', error);
+      } else {
+        setLeaderboardData(data);
+      }
+      setLoadingData(false);
+    };
+
+    if (user) {
+      fetchLeaderboardData();
+    }
+  }, [user]);
+
+  if (loading || loadingData) {
     return (
       <div className="flex items-center justify-center">
         <span className="loading loading-infinity loading-lg"></span>
@@ -66,11 +43,10 @@ const Leaderboard = () => {
 
   return (
     <>
-      <Navbar user={user} /> 
-       
+      <Navbar user={user} />
       <main>
-      <div className="max-w-6xl mx-auto pt-">
-          <div className="text-center mb-8">
+        <div className="max-w-6xl mx-auto pt-8">
+          <div className="text-center pt-8 mb-8">
             <h1 className="text-4xl font-bold">Leaderboard</h1>
             <p className="text-gray-600">Check out the top contributors and their achievements</p>
           </div>
@@ -81,14 +57,12 @@ const Leaderboard = () => {
                   <th>Rank</th>
                   <th>Avatar</th>
                   <th>Name</th>
-                  <th>Level</th>
                   <th>Coins</th>
-                  <th>Achievements</th>
                 </tr>
               </thead>
               <tbody>
                 {leaderboardData.map((user, index) => (
-                  <tr key={user.id}>
+                  <tr key={user.user_name}>
                     <td>
                       {index + 1 === 1 && '🥇'}
                       {index + 1 === 2 && '🥈'}
@@ -98,20 +72,12 @@ const Leaderboard = () => {
                     <td>
                       <div className="avatar">
                         <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                          <img src={user.avatarUrl} alt={user.name} />
+                          <img src={`https://avatars.dicebear.com/api/initials/${user.user_name}.svg`} alt={user.user_name} />
                         </div>
                       </div>
                     </td>
-                    <td>{user.name}</td>
-                    <td>{user.level}</td>
-                    <td>{user.coins}</td>
-                    <td>
-                      <ul className="list-disc pl-5 space-y-1">
-                        {user.achievements.map((achievement, i) => (
-                          <li key={i}>{achievement}</li>
-                        ))}
-                      </ul>
-                    </td>
+                    <td>{user.user_name}</td>
+                    <td>{user.points}</td>
                   </tr>
                 ))}
               </tbody>
@@ -119,7 +85,6 @@ const Leaderboard = () => {
           </div>
         </div>
       </main>
-        
     </>
   );
 };
