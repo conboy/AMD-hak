@@ -1,13 +1,36 @@
 "use client"
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import useAuth from './lib/useAuth';
+import supabase from './lib/supabaseClient';
 
 const Home = () => {
   const { user, loading } = useAuth();
+  const [tickets, setTickets] = useState([]);
+  const [loadingTickets, setLoadingTickets] = useState(true);
 
-  if (loading) {
-    return <div>Loading...</div>; // You can replace this with a loader/spinner
+  useEffect(() => {
+    if (user) {
+      const fetchTickets = async () => {
+        const { data, error } = await supabase.from('tickets').select('*');
+        if (error) {
+          console.error('Error fetching tickets:', error);
+        } else {
+          setTickets(data);
+        }
+        setLoadingTickets(false);
+      };
+
+      fetchTickets();
+    }
+  }, [user]);
+
+  if (loading || loadingTickets) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="loading loading-infinity loading-lg"></span>
+      </div>
+    );
   }
 
   if (!user) {
@@ -28,11 +51,12 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              {/* Replace with your dynamic data */}
-              <tr>
-                <td>1</td>
-                <td>Sample Issue</td>
-              </tr>
+              {tickets.map(ticket => (
+                <tr key={ticket.id}>
+                  <td>{ticket.id}</td>
+                  <td>{ticket.name}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
