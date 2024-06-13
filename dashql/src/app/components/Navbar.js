@@ -2,7 +2,7 @@ import Link from "next/link";
 
 function Navbar({ user }) {
     return (
-        <div className="navbar bg-base-100">
+        <div className="navbar bg-base-200">
                 <div className="flex-1">
                     <Link href="/">
                         <p className="btn btn-ghost text-xl">DashQL 🕵️</p>
@@ -21,10 +21,7 @@ function Navbar({ user }) {
                 </div>
                 <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
                     <li>
-                    <a href="/profile" className="justify-between">
-                        Profile
-                        <span className="badge">New</span>
-                    </a>
+                    <a href="/profile" className="justify-between">Profile</a>
                     </li>
                     <li><a href="/stats">Stats</a></li>
                     <li><a>Logout</a></li>
