@@ -87,11 +87,11 @@ const Home = () => {
     setSelectedTicket(null);
   };
 
-  const generateGitHubLink = (uri, startLine, endLine) => {
+  const generateGitHubLink = (uri, commit, startLine, endLine) => {
     if (!uri || !startLine) return 'N/A';
-    const repoUrl = 'https://github.com/tensorflow/tensorflow/blob/master/'
+    const repoUrl = 'https://github.com/tensorflow/tensorflow/blob/'
     const baseUrl = uri.split('#')[0];
-    return `${repoUrl}${baseUrl}#L${startLine}${endLine && endLine !== 'N/A' ? `-L${endLine}` : ''}`;
+    return `${repoUrl}${commit}/${baseUrl}#L${startLine}${endLine && endLine !== 'N/A' ? `-L${endLine}` : ''}`;
   };
 
   const updatePointsAndStatus = async (status) => {
@@ -229,7 +229,7 @@ const Home = () => {
                 <p><strong>Sub-severity:</strong> {selectedTicket.sub_severity || 'N/A'}</p>
               </div>
               <div className="flex justify-center space-x-4">
-                <a href={generateGitHubLink(selectedTicket.uri, selectedTicket.startLine, selectedTicket.endLine)} target="_blank" rel="noopener noreferrer">
+                <a href={generateGitHubLink(selectedTicket.uri, selectedTicket.commit, selectedTicket.startLine, selectedTicket.endLine)} target="_blank" rel="noopener noreferrer">
                   <button className="btn btn-neutral">Github Link</button>
                 </a>
                 <button className="btn btn-error" onClick={() => updatePointsAndStatus('False Positive')}>False Positive ❌</button>
