@@ -51,12 +51,24 @@ const Home = () => {
   const getStatusClass = (status) => {
     switch (status) {
       case 'False Positive':
-        return 'badge-md badge-warning';
+        return 'badge badge-warning';
       case 'Fixed':
-        return 'badge-md badge-error';
+        return 'badge badge-error';
       case 'Open':
       default:
-        return 'badge-md badge-success';
+        return 'badge badge-success';
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'False Positive':
+        return 'FP';
+      case 'Fixed':
+        return 'Fixed';
+      case 'Open':
+      default:
+        return 'Open';
     }
   };
 
@@ -176,7 +188,7 @@ const Home = () => {
                 <tr key={ticket.id} onClick={() => handleRowClick(ticket.id)}>
                   <td>{ticket.id}</td>
                   <td>{ticket.security_severity} 🪙</td>
-                  <td><span className={getStatusClass(ticket.status)}>{ticket.status}</span></td>
+                  <td><span className={getStatusClass(ticket.status)}>{getStatusText(ticket.status)}</span></td>
                   <td>{ticket.ruleId}</td>
                   <td>{ticket.message_text}</td>
                   <td>
