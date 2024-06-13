@@ -48,6 +48,18 @@ const Home = () => {
     }
   };
 
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'False Positive':
+        return 'badge badge-warning';
+      case 'Fixed':
+        return 'badge badge-error';
+      case 'Open':
+      default:
+        return 'badge badge-success';
+    }
+  };
+
   const handleRowClick = async (ticketId) => {
     const { data, error } = await supabase.from('tickets').select('*').eq('id', ticketId).single();
     if (error) {
@@ -68,6 +80,67 @@ const Home = () => {
     const repoUrl = 'https://github.com/tensorflow/tensorflow/blob/master/'
     const baseUrl = uri.split('#')[0];
     return `${repoUrl}${baseUrl}#L${startLine}${endLine && endLine !== 'N/A' ? `-L${endLine}` : ''}`;
+  };
+
+  const updatePointsAndStatus = async (status) => {
+    if (!user || !selectedTicket) return;
+    const { user_name } = user.user_metadata;
+    const { security_severity } = selectedTicket;
+
+    // Fetch the existing user points record
+    let { data: pointsData, error: pointsError } = await supabase
+      .from('points')
+      .select('*')
+      .eq('user_name', user_name)
+      .single();
+
+    if (pointsError && pointsError.code !== 'PGRST116') {
+      console.error('Error fetching points:', pointsError);
+      return;
+    }
+
+    // If no record exists, create a new one
+    if (!pointsData) {
+      const { data, error } = await supabase
+        .from('points')
+        .insert([{ user_name, points: security_severity, number_solved: 1 }]);
+      if (error) {
+        console.error('Error inserting points:', error);
+        return;
+      }
+    } else {
+      // Update the existing record
+      const { data, error } = await supabase
+        .from('points')
+        .update({
+          points: pointsData.points + security_severity,
+          number_solved: pointsData.number_solved + 1
+        })
+        .eq('user_name', user_name);
+      if (error) {
+        console.error('Error updating points:', error);
+        return;
+      }
+    }
+
+    // Update the ticket status
+    const { data: ticketData, error: ticketError } = await supabase
+      .from('tickets')
+      .update({ status })
+      .eq('id', selectedTicket.id);
+
+    if (ticketError) {
+      console.error('Error updating ticket status:', ticketError);
+      return;
+    }
+
+    // Update the local state
+    setTickets(prevTickets =>
+      prevTickets.map(ticket =>
+        ticket.id === selectedTicket.id ? { ...ticket, status } : ticket
+      )
+    );
+    closeModal();
   };
 
   if (loading || loadingTickets) {
@@ -92,6 +165,7 @@ const Home = () => {
               <tr>
                 <th>🎫</th>
                 <th>Bounty</th>
+                <th>Status</th>
                 <th>Rule ID</th>
                 <th>Description</th>
                 <th>Assigned to</th>
@@ -102,6 +176,7 @@ const Home = () => {
                 <tr key={ticket.id} onClick={() => handleRowClick(ticket.id)}>
                   <td>{ticket.id}</td>
                   <td>{ticket.security_severity} 🪙</td>
+                  <td><span className={getStatusClass(ticket.status)}>{ticket.status}</span></td>
                   <td>{ticket.ruleId}</td>
                   <td>{ticket.message_text}</td>
                   <td>
@@ -127,32 +202,29 @@ const Home = () => {
         {modalVisible && selectedTicket && (
           <div className="modal modal-open">
             <div className="modal-box w-11/12 max-w-5xl">
-              <h3 className="font-bold text-lg">Ticket Details</h3>
+              <h3 className="font-bold text-lg">Ticket #{selectedTicket.id}</h3>
+              <h3 className="font-bold text-lg pt-2">🪙 {selectedTicket.security_severity}</h3>
               <div className="py-4">
                 <p><strong>Rule ID:</strong> {selectedTicket.ruleId || 'N/A'}</p>
                 <p><strong>Message Text:</strong> {selectedTicket.message_text || 'N/A'}</p>
                 <p><strong>Description:</strong> {selectedTicket.fullDescription || 'N/A'}</p>
-                <p>
-                  <strong>GitHub Link:</strong>{' '}
-                  <a href={generateGitHubLink(selectedTicket.uri, selectedTicket.startLine, selectedTicket.endLine)} target="_blank" rel="noopener noreferrer">
-                    {generateGitHubLink(selectedTicket.uri, selectedTicket.startLine, selectedTicket.endLine)}
-                  </a>
-                </p>
-                <p><strong>URI:</strong> {selectedTicket.uri || 'N/A'}</p>
-                <p><strong>Start Line:</strong> {selectedTicket.startLine || 'N/A'}</p>
-                <p><strong>Start Column:</strong> {selectedTicket.startColumn || 'N/A'}</p>
-                <p><strong>End Line:</strong> {selectedTicket.endLine || 'N/A'}</p>
-                <p><strong>End Column:</strong> {selectedTicket.endColumn || 'N/A'}</p>
                 <p><strong>Level:</strong> {selectedTicket.level || 'N/A'}</p>
                 <p><strong>Tags:</strong> {selectedTicket.tags || 'N/A'}</p>
                 <p><strong>Kind:</strong> {selectedTicket.kind || 'N/A'}</p>
                 <p><strong>Precision:</strong> {selectedTicket.precision || 'N/A'}</p>
-                <p><strong>Problem Severity:</strong> {selectedTicket.problem?.severity || 'N/A'}</p>
-                <p><strong>Security Severity:</strong> {selectedTicket['security-severity'] || 'N/A'}</p>
-                <p><strong>Sub-severity:</strong> {selectedTicket['sub-severity'] || 'N/A'}</p>
+                <p><strong>Problem Severity:</strong> {selectedTicket.problem_severity || 'N/A'}</p>
+                <p><strong>Security Severity:</strong> {selectedTicket.security_severity || 'N/A'}</p>
+                <p><strong>Sub-severity:</strong> {selectedTicket.sub_severity || 'N/A'}</p>
               </div>
-              <div className="modal-action">
-                <button className="btn btn-primary" onClick={closeModal}>Close</button>
+              <div className="flex justify-center space-x-4">
+                <a href={generateGitHubLink(selectedTicket.uri, selectedTicket.startLine, selectedTicket.endLine)} target="_blank" rel="noopener noreferrer">
+                  <button className="btn btn-neutral">Github Link</button>
+                </a>
+                <button className="btn btn-error" onClick={() => updatePointsAndStatus('False Positive')}>False Positive ❌</button>
+                <button className="btn btn-success" onClick={() => updatePointsAndStatus('Fixed')}>Fixed ✅</button>
+                <button className="btn btn-square" onClick={closeModal}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
               </div>
             </div>
           </div>
