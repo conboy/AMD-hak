@@ -37,9 +37,11 @@ const Home = () => {
     return <div>Redirecting to GitHub login...</div>;
   }
 
+  console.log(user)
+
   return (
     <>
-      <Navbar />
+      <Navbar user={user} />
       {/* Main content */}
       <main>
         <div className="overflow-x-auto">
