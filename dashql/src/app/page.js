@@ -51,12 +51,12 @@ const Home = () => {
   const getStatusClass = (status) => {
     switch (status) {
       case 'False Positive':
-        return 'badge badge-warning';
+        return 'badge badge-md badge-warning';
       case 'Fixed':
-        return 'badge badge-error';
+        return 'badge badge-md badge-error';
       case 'Open':
       default:
-        return 'badge badge-success';
+        return 'badge badge-md badge-success';
     }
   };
 
