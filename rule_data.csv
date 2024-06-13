@@ -1,2 +1,0 @@
-﻿RuleID,Name,Tag : List,shortDesc,longDesc,level,kind,secSeverity
-py/xpath-injection,py/xpath-injection,"security, external/cwe/cwe-643",XPath query built from user-controlled sources,Building a XPath query from user-controlled sources is vulnerable to insertion of malicious Xpath code by the user.,error,path-problem,9.8

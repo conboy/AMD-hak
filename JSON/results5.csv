@@ -1,0 +1,36 @@
+ruleId,ruleIndex,message_text,uri,uriBaseId,index,startLine,startColumn,endColumn
+py/bind-socket-all-network-interfaces,1,'' binds a socket to all interfaces.,tensorflow/contrib/opt/python/training/variable_clipping_optimizer_test.py,%SRCROOT%,0,42,7,22
+py/insecure-protocol,21,"Insecure SSL/TLS protocol version TLSv1 allowed by [call to ssl.SSLContext](1).
+Insecure SSL/TLS protocol version TLSv1_1 allowed by [call to ssl.SSLContext](1).",tensorflow/contrib/ignite/python/ops/ignite_dataset_ops.py,%SRCROOT%,1,122,19,26
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/contrib/rnn/python/tools/checkpoint_convert_test.py,%SRCROOT%,2,35,27,44
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/contrib/rnn/python/tools/checkpoint_convert_test.py,%SRCROOT%,2,36,27,44
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/cli/curses_ui_test.py,%SRCROOT%,3,94,27,44
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/cli/curses_ui_test.py,%SRCROOT%,3,1223,19,36
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/cli/curses_ui_test.py,%SRCROOT%,3,1260,19,36
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/lib/debug_data_test.py,%SRCROOT%,4,154,23,40
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/lib/debug_data_test.py,%SRCROOT%,4,186,31,48
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/examples/debug_errors.py,%SRCROOT%,5,45,25,57
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/examples/debug_keras.py,%SRCROOT%,6,45,25,57
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/examples/debug_mnist.py,%SRCROOT%,7,129,25,57
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/examples/debug_tflearn_iris.py,%SRCROOT%,8,61,25,57
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/cli/debugger_cli_common_test.py,%SRCROOT%,9,256,17,34
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/cli/debugger_cli_common_test.py,%SRCROOT%,9,933,31,48
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/keras/distribute/keras_utils_test.py,%SRCROOT%,10,560,24,46
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/keras/distribute/keras_utils_test.py,%SRCROOT%,10,596,24,41
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/saved_model/load_test.py,%SRCROOT%,11,194,16,59
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/wrappers/local_cli_wrapper.py,%SRCROOT%,12,87,25,66
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/wrappers/local_cli_wrapper_test.py,%SRCROOT%,13,142,21,38
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/kernel_tests/logging_ops_test.py,%SRCROOT%,14,311,20,52
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/cli/readline_ui_test.py,%SRCROOT%,15,40,54,71
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/cli/readline_ui_test.py,%SRCROOT%,15,171,19,36
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/debug/lib/source_utils_test.py,%SRCROOT%,16,211,29,46
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/python/framework/test_util.py,%SRCROOT%,17,1833,21,61
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/lite/schema/upgrade_schema_test.py,%SRCROOT%,18,257,20,51
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/lite/schema/upgrade_schema_test.py,%SRCROOT%,18,263,25,55
+py/tarslip,35,This file extraction depends on a [potentially untrusted source](1).,tensorflow/contrib/model_pruning/examples/cifar10/cifar10_pruning.py,%SRCROOT%,19,403,3,33
+py/tarslip,35,This file extraction depends on a [potentially untrusted source](1).,tensorflow/contrib/eager/python/examples/revnet/cifar_tfrecords.py,%SRCROOT%,20,51,3,47
+py/tarslip,35,"This file extraction depends on a [potentially untrusted source](1).
+This file extraction depends on a [potentially untrusted source](1).",tensorflow/python/keras/utils/data_utils.py,%SRCROOT%,21,138,11,18
+py/tarslip,35,This file extraction depends on a [potentially untrusted source](1).,tensorflow/examples/speech_commands/input_data.py,%SRCROOT%,22,243,7,37
+py/tarslip,35,This file extraction depends on a [potentially untrusted source](1).,tensorflow/contrib/learn/python/learn/datasets/text_datasets.py,%SRCROOT%,23,48,5,10
+py/overly-permissive-file,40,Overly permissive mask in chmod sets file to world writable.,tensorflow/python/lib/io/file_io_test.py,%SRCROOT%,24,609,5,33

@@ -1,0 +1,6 @@
+ruleId,ruleIndex,message_text,uri,uriBaseId,index,startLine,startColumn,endColumn
+py/insecure-temporary-file,24,Call to deprecated function tempfile.mktemp may be insecure.,tensorflow/compiler/mlir/tensorflow/tests/tf_saved_model/common_v1.py,%SRCROOT%,0,91,25,63
+py/tarslip,35,"This file extraction depends on a [potentially untrusted source](1).
+This file extraction depends on a [potentially untrusted source](1).",tensorflow/python/keras/utils/data_utils.py,%SRCROOT%,1,135,11,18
+py/tarslip,35,This file extraction depends on a [potentially untrusted source](1).,tensorflow/examples/speech_commands/input_data.py,%SRCROOT%,2,240,7,37
+py/overly-permissive-file,40,Overly permissive mask in chmod sets file to world readable.,tensorflow/tools/pip_package/v2/utils/utils.py,%SRCROOT%,3,78,3,47
