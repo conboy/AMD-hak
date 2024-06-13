@@ -1,17 +1,10 @@
 import Link from "next/link";
-import { useRouter } from 'next/router';
 import supabase from "../lib/supabaseClient"
 
 function Navbar({ user }) {
-    const router = useRouter();
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
-        if (error) {
-            console.error('Error logging out:', error);
-        } else {
-            router.push('/'); // Redirect to home page after logout
-        }
     };
 
     return (
