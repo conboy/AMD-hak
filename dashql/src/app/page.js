@@ -48,15 +48,21 @@ const Home = () => {
           <table className="table">
             <thead>
               <tr>
-                <th>Ticket #</th>
-                <th>Name</th>
+                <th>🎫</th>
+                <th>Bounty</th>
+                <th>Rule ID</th>
+                <th>Description</th>
+                <th>Assigned to</th>
               </tr>
             </thead>
             <tbody>
               {tickets.map(ticket => (
                 <tr key={ticket.id}>
                   <td>{ticket.id}</td>
-                  <td>{ticket.name}</td>
+                  <td>{ticket.security_severity} 🪙</td>
+                  <td>{ticket.ruleId}</td>
+                  <td>{ticket.message_text}</td>
+                  <td>{ticket.assigned_to ? ticket.assigned_to : <button className="btn btn-sm btn-primary">Assign Me</button>}</td>
                 </tr>
               ))}
             </tbody>
